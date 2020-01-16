@@ -98,8 +98,8 @@ Previewer.propTypes = {
 
 // Uncomment keys to register editors for media types
 const REGISTERED_EDITORS = {
-  // "text/plain": PlaintextEditor,
-  // "text/markdown": MarkdownEditor,
+  "text/plain": PlaintextEditor,
+  "text/markdown": MarkdownEditor,
 };
 
 function PlaintextFilesChallenge() {
@@ -113,8 +113,19 @@ function PlaintextFilesChallenge() {
 
   const write = file => {
     console.log("Writing... ", file.name);
+    console.log(file);
 
-    // TODO: Write the file to the `files` array in state
+    const result = files.find(e => e.name == file.name);
+    const index = files.indexOf(result);
+    
+    const buffer = files.slice();
+    buffer[index] = file;
+
+    console.log(files);
+    console.log(buffer);
+
+    setFiles(buffer);
+    setActiveFile(buffer[index]);
   };
 
   const Editor = activeFile ? REGISTERED_EDITORS[activeFile.type] : null;
@@ -123,6 +134,7 @@ function PlaintextFilesChallenge() {
     <div className={css.page}>
       <Head>
         <title>Rethink Engineering Challenge</title>
+        <link rel="stylesheet" href="https://nebulon.s3.amazonaws.com/react-mde/react-mde-all.css" />
       </Head>
       <aside>
         <header>
